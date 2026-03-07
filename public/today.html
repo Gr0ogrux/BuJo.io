@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" type="image/png" href="/public/img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/public/img/favicon.svg" />
+    <link rel="shortcut icon" href="/public/img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/img/apple-touch-icon.png" />
+    <link rel="manifest" href="/public/img/site.webmanifest" />
+    <title>Today - BuJo.io</title>
+</head>
+<body>
+    <main class="main">
+        <h1 class="main__title">Today</h1>
+        <p class="main__description">Quickly jot down your thoughts, tasks, and reflections for the day.</p>
+        
+        <form class="log-form" action="#" method="post">
+            <div class="form-group">
+                <label>Log Type:</label>
+                <div class="radio-group">
+                    <input type="radio" id="todo" name="log-type" value="todo" required>
+                    <label for="todo">To-Do</label>
+                    <input type="radio" id="event" name="log-type" value="event">
+                    <label for="event">Event</label>
+                    <input type="radio" id="memory" name="log-type" value="memory">
+                    <label for="memory">Memory</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="log-entry">Log Entry:</label>
+                <textarea id="log-entry" name="log-entry" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Save Log</button>
+        </form>
+    </main>
+</body>
+</html>
