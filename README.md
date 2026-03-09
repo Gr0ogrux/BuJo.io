@@ -13,3 +13,6 @@ Started working on the project.  Created README.md, public folder, and .gitignor
 
 **03/06/2026**
 Created more html files and added some code to js.  Used Canva to create logo and favicon, which have been stored in the public/img folder.  Used realfavicongenerator.net to create set of favicons for different browsers.
+
+**03/08/2026**
+Changed and removed some HTML files.  Added setup.js.  Added basic css styling while developing app.  Will change that later.

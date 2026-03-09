@@ -1,1 +1,86 @@
 @import url("./reset.css");
+
+.main {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+
+.mainTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+#current-date {
+    color: #666;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 2rem;
+}
+
+
+.log-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+
+textarea, 
+input[type="date"], 
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd; 
+    border-radius: 6px;
+    background-color: #fcfcfc;
+}
+
+textarea:focus {
+    border-color: #000;
+    background-color: #fff;
+}
+
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+
+.radio-group input[type="radio"] {
+    appearance: auto; 
+    margin-right: 5px;
+}
+
+
+.submit-btn {
+    background-color: #000;
+    color: #fff;
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    transition: opacity 0.2s;
+}
+
+.submit-btn:hover {
+    opacity: 0.8;
+}
+
+
+#entries-list {
+    margin-top: 3rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
