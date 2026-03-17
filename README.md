@@ -16,3 +16,6 @@ Created more html files and added some code to js.  Used Canva to create logo an
 
 **03/08/2026**
 Changed and removed some HTML files.  Added setup.js.  Added basic css styling while developing app.  Will change that later.
+
+**03/17/2026**
+Implemented QuillJS into the project for easier text editing for the users.  Will begin working on the implementation of URL parameters for different journal entries.
