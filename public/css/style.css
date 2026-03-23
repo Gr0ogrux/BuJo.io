@@ -228,3 +228,11 @@ textarea:focus {
     border-color: #aaa;
     background: #f7f7f7;
 }
+
+.hidden {
+    display: none;
+}
+
+#holidays-toggle {
+    user-select: none;
+}

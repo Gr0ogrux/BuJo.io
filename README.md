@@ -19,3 +19,6 @@ Changed and removed some HTML files.  Added setup.js.  Added basic css styling w
 
 **03/17/2026**
 Implemented QuillJS into the project for easier text editing for the users.  Will begin working on the implementation of URL parameters for different journal entries.
+
+**03/22/2026**
+Added Nager.Date API to project to help users see upcoming holidays at-a-glance when planning their days.

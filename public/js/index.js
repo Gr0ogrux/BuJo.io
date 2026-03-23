@@ -67,6 +67,105 @@ function initQuill() {
 
 const STORAGE_KEY = 'bujo_entries';
 
+async function fetchUpcomingHolidays() {
+    try {
+        const res = await fetch("https://date.nager.at/api/v3/NextPublicHolidays/US");
+        return await res.json();
+    } catch (err) {
+        console.error("Failed to fetch holidays:", err);
+        return [];
+    }
+}
+
+function getDaysRemaining(dateString) {
+    const today = new Date();
+    const target = new Date(dateString);
+
+    const diffTime = target - today;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+function renderHolidays(holidays) {
+    const container = document.getElementById("holiday-list");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    holidays.slice(0, 5).forEach(h => {
+        const days = getDaysRemaining(h.date);
+
+        const div = document.createElement("div");
+        div.className = "holiday-card";
+
+        div.innerHTML = `
+            <strong>${h.name}</strong><br>
+            <small>${formatDateMMDDYYYY(h.date)}</small><br>
+            <em>${days === 0 ? "Today!" : `${days} days remaining`}</em><br>
+            <button class="add-holiday-btn" data-name="${h.name}" data-date="${h.date}">
+                Add to Journal
+            </button>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+function addHolidayToJournal(name, date) {
+    const entries = loadEntries();
+
+    entries.push({
+        id: Date.now(),
+        type: 'event',
+        html: `<p><strong>${name}</strong> (Holiday)</p>`,
+        date: date, 
+        state: 'active'
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    renderEntries();
+}
+
+function initHolidayListeners() {
+    const container = document.getElementById("holiday-list");
+    if (!container) return;
+
+    container.addEventListener("click", (e) => {
+        if (e.target.classList.contains("add-holiday-btn")) {
+            const name = e.target.dataset.name;
+            const date = e.target.dataset.date;
+
+            addHolidayToJournal(name, date);
+        }
+    });
+}
+
+function initHolidayToggle() {
+    const toggle = document.getElementById("holidays-toggle");
+    const list = document.getElementById("holiday-list");
+
+    if (!toggle || !list) return;
+
+    toggle.addEventListener("click", () => {
+        const isHidden = list.classList.contains("hidden");
+
+        list.classList.toggle("hidden");
+
+        toggle.textContent = isHidden
+            ? "▼ Upcoming Holidays"
+            : "▶ Upcoming Holidays";
+    });
+}
+
+function formatDateMMDDYYYY(dateString) {
+    const date = new Date(dateString);
+
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${month}-${day}-${year}`;
+}
+
 function todayKey() {
     return new Date().toISOString().split('T')[0];
 }
@@ -155,8 +254,13 @@ function renderEntries() {
     });
 }
 
-window.onload = function () {
+window.onload = async function () {
     displayCurrentDate();
     initQuill();
     renderEntries();
+
+    const holidays = await fetchUpcomingHolidays();
+    renderHolidays(holidays);
+    initHolidayListeners();
+    initHolidayToggle();
 };
