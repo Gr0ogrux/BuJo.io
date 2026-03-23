@@ -10,8 +10,50 @@ if (startLink) {
 function displayCurrentDate() {
     const el = document.getElementById('current-date');
     if (!el) return;
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    el.innerText = new Date().toLocaleDateString('en-US', options);
+
+    const view = getActiveView();
+    const today = new Date();
+
+    if (view === 'day') {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        el.innerText = today.toLocaleDateString('en-US', options);
+    }
+
+    if (view === 'week') {
+        const start = new Date(today);
+        start.setDate(today.getDate() - today.getDay());
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6);
+        el.innerText = formatRange(start, end, 'week');
+    }
+
+    if (view === 'month') {
+        const start = new Date(today.getFullYear(), today.getMonth(), 1);
+        const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        el.innerText = formatRange(start, end, 'month');
+    }
+
+    if (view === 'year') {
+        const start = new Date(today.getFullYear(), 0, 1);
+        const end = new Date(today.getFullYear(), 11, 31);
+        el.innerText = formatRange(start, end, 'year');
+    }
+}
+
+function formatRange(start, end, view) {
+    const dayMonth = { month: 'long', day: 'numeric' };
+    const monthYear = { month: 'long', year: 'numeric' };
+
+    if (view === 'week' || view === 'month') {
+        return start.toLocaleDateString('en-US', dayMonth) + 
+               ' to ' + 
+               end.toLocaleDateString('en-US', dayMonth);
+    }
+    if (view === 'year') {
+        return start.toLocaleDateString('en-US', monthYear) + 
+               ' to ' + 
+               end.toLocaleDateString('en-US', monthYear);
+    }
 }
 
 const SYMBOLS = {
@@ -65,7 +107,12 @@ function initQuill() {
     });
 }
 
-const STORAGE_KEY = 'bujo_entries';
+function updateTitle() {
+    const titles = { day: 'Today', week: 'This Week', month: 'This Month', year: 'This Year' };
+    const title = titles[getActiveView()];
+    document.querySelector('.mainTitle').textContent = title;
+    document.title = title + ' - BuJo.io';
+}
 
 async function fetchUpcomingHolidays() {
     try {
@@ -170,35 +217,12 @@ function todayKey() {
     return new Date().toISOString().split('T')[0];
 }
 
-function loadEntries() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-    catch { return []; }
-}
-
-function saveEntry(type, html) {
-    const entries = loadEntries();
-    entries.push({ id: Date.now(), type, html, date: todayKey(), state: 'active' });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    renderEntries();
-}
-
-function updateEntryState(id, state) {
-    const entries = loadEntries().map(e => e.id === id ? { ...e, state } : e);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    renderEntries();
-}
-
-function deleteEntry(id) {
-    const updated = loadEntries().filter(e => e.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    renderEntries();
-}
-
 function renderEntries() {
     const list = document.getElementById('entries-list');
     if (!list) return;
 
-    const entries = loadEntries().filter(e => e.date === todayKey());
+    const view = getActiveView();
+    const entries = loadEntries().filter(e => isInView(e.date, view));
     list.innerHTML = '';
 
     if (entries.length === 0) return;
@@ -254,6 +278,43 @@ function renderEntries() {
     });
 }
 
+function getActiveView() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') || 'day';
+}
+
+function isInView(dateString, view) {
+    const today = new Date();
+    const date = new Date(dateString + 'T00:00:00');
+
+    if (view === 'day') {
+        return dateString === todayKey();
+    }
+    if (view === 'week') {
+        const start = new Date(today);
+        start.setDate(today.getDate() - today.getDay());
+        start.setHours(0, 0, 0, 0);
+        return date >= start;
+    }
+    if (view === 'month') {
+        return date.getMonth() === today.getMonth() &&
+               date.getFullYear() === today.getFullYear();
+    }
+    if (view === 'year') {
+        return date.getFullYear() === today.getFullYear();
+    }
+    return false;
+}
+
+function setActiveViewLink() {
+    const view = getActiveView();
+    document.querySelectorAll('.view-nav a').forEach(a => {
+        const params = new URLSearchParams(a.search);
+        const linkView = params.get('view') || 'day';
+        if (linkView === view) a.classList.add('active');
+    });
+}
+
 window.onload = async function () {
     displayCurrentDate();
     initQuill();
@@ -263,4 +324,6 @@ window.onload = async function () {
     renderHolidays(holidays);
     initHolidayListeners();
     initHolidayToggle();
+    setActiveViewLink();
+    updateTitle();
 };

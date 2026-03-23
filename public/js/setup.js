@@ -13,6 +13,6 @@ setupForm.addEventListener('submit', (e) => {
         setupComplete: true
     };
 
-    localStorage.setItem('bujo_user_settings', JSON.stringify(userSettings));
+    saveUserSettings(userSettings);
 
     window.location.href = 'dashboard.html';});

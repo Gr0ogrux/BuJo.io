@@ -22,3 +22,6 @@ Implemented QuillJS into the project for easier text editing for the users.  Wil
 
 **03/22/2026**
 Added Nager.Date API to project to help users see upcoming holidays at-a-glance when planning their days.
+
+**03/23/2026**
+Moved all localStorage logic out of index.js and imported it to storage.js.  Started building url paremeters in bujo.html.  Discovered bug where entries didn't display properly across all parameters.  Will address.

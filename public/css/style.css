@@ -78,7 +78,7 @@ textarea:focus {
     padding-top: 2rem;
 }
 
-/* ─── Quill editor ──────────────────────────────────────────── */
+/* Quill editor */
 
 .ql-toolbar.ql-snow {
     border: 1px solid #ddd;
@@ -235,4 +235,24 @@ textarea:focus {
 
 #holidays-toggle {
     user-select: none;
+}
+
+.view-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.view-nav a {
+    padding: 6px 14px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.view-nav a.active {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
 }
