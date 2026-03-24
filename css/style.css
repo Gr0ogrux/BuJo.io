@@ -199,6 +199,12 @@ textarea:focus {
     opacity: 1;
 }
 
+.entry-date {
+    font-size: 0.8rem;
+    color: #999;
+    margin-left: 6px;
+}
+
 .action-btn {
     background: none;
     border: 1px solid #e0e0e0;
@@ -256,3 +262,10 @@ textarea:focus {
     color: #fff;
     border-color: #000;
 }
+
+.action-btn--edit:hover {
+    color: #805ad5;
+    border-color: #805ad5;
+    background: #faf5ff;
+}
+

@@ -25,3 +25,6 @@ Added Nager.Date API to project to help users see upcoming holidays at-a-glance 
 
 **03/23/2026**
 Moved all localStorage logic out of index.js and imported it to storage.js.  Started building url paremeters in bujo.html.  Discovered bug where entries didn't display properly across all parameters.  Will address.
+
+**03/24/2026**
+Moved all files out of public folder and removed folder.  Updated all links that previously directed to public folder.  Still working on bug for entry display.  Want to add feature that displays date entered for past entries.  Edited date ranges loaded for week, month, and year view in bujo.html.  Need to add feature that lets user select date when creating entries.  May need to limit it to events.

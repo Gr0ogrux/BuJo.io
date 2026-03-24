@@ -20,24 +20,20 @@ function displayCurrentDate() {
     }
 
     if (view === 'week') {
-        const start = new Date(today);
-        start.setDate(today.getDate() - today.getDay());
-        const end = new Date(start);
-        end.setDate(start.getDate() + 6);
-        el.innerText = formatRange(start, end, 'week');
-    }
+    const end = new Date(today);
+    end.setDate(today.getDate() + 6);
+    el.innerText = formatRange(today, end, 'week');
+}
 
-    if (view === 'month') {
-        const start = new Date(today.getFullYear(), today.getMonth(), 1);
-        const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-        el.innerText = formatRange(start, end, 'month');
-    }
+if (view === 'month') {
+    el.innerText = today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
 
-    if (view === 'year') {
-        const start = new Date(today.getFullYear(), 0, 1);
-        const end = new Date(today.getFullYear(), 11, 31);
-        el.innerText = formatRange(start, end, 'year');
-    }
+if (view === 'year') {
+    const end = new Date(today);
+    end.setFullYear(today.getFullYear() + 1);
+    el.innerText = formatRange(today, end, 'year');
+}
 }
 
 function formatRange(start, end, view) {
@@ -242,29 +238,40 @@ function renderEntries() {
         }
 
         let actionsHtml = '';
-        if (entry.type === 'todo') {
-            if (entry.state === 'active') {
-                actionsHtml = `
-                    <div class="entry-actions">
-                        <button class="action-btn action-btn--done"    data-id="${entry.id}" title="Mark complete">✕</button>
-                        <button class="action-btn action-btn--migrate" data-id="${entry.id}" title="Migrate to next day">›</button>
-                        <button class="action-btn action-btn--delete"  data-id="${entry.id}" title="Delete">⌫</button>
-                    </div>`;
-            } else {
-                actionsHtml = `
-                    <div class="entry-actions">
-                        <button class="action-btn action-btn--delete" data-id="${entry.id}" title="Delete">⌫</button>
-                    </div>`;
-            }
-        }
+    if (entry.type === 'todo') {
+        if (entry.state === 'active') {
+            actionsHtml = `
+                <div class="entry-actions">
+                    <button class="action-btn action-btn--done"    data-id="${entry.id}" title="Mark complete">✕</button>
+                    <button class="action-btn action-btn--migrate" data-id="${entry.id}" title="Migrate to next day">›</button>
+                    <button class="action-btn action-btn--delete"  data-id="${entry.id}" title="Delete">⌫</button>
+                </div>`;
+    } else {
+        actionsHtml = `
+            <div class="entry-actions">
+                <button class="action-btn action-btn--delete" data-id="${entry.id}" title="Delete">⌫</button>
+            </div>`;
+    }
+    }
+    if (entry.type === 'event') {
+        actionsHtml = `
+            <div class="entry-actions">
+                <button class="action-btn action-btn--edit"   data-id="${entry.id}" title="Edit">✎</button>
+                <button class="action-btn action-btn--delete" data-id="${entry.id}" title="Delete">⌫</button>
+            </div>`;
+    }
 
-        row.innerHTML = `
-            <div class="entry-symbol">${symbolHtml}</div>
-            <div class="entry-body">${entry.html}</div>
-            ${actionsHtml}
-        `;
+    const entryDate = entry.type === 'event' 
+    ? `<span class="entry-date">${formatDateMMDDYYYY(entry.date).slice(0, 5).replace('-', '/')}</span>` 
+    : '';
 
-        list.appendChild(row);
+    row.innerHTML = `
+        <div class="entry-symbol">${symbolHtml}</div>
+        <div class="entry-body">${entry.html}${entryDate}</div>
+        ${actionsHtml}
+    `;
+
+    list.appendChild(row);
     });
 
     list.querySelectorAll('.action-btn--done').forEach(btn => {
@@ -276,6 +283,22 @@ function renderEntries() {
     list.querySelectorAll('.action-btn--delete').forEach(btn => {
         btn.addEventListener('click', () => deleteEntry(Number(btn.dataset.id)));
     });
+    list.querySelectorAll('.action-btn--edit').forEach(btn => {
+        btn.addEventListener('click', () => editEntry(Number(btn.dataset.id)));
+    });
+}
+
+function editEntry(id) {
+    const entries = loadEntries();
+    const entry = entries.find(e => e.id === id);
+    if (!entry) return;
+
+    const newText = prompt('Edit your entry:', entry.html.replace(/<[^>]*>/g, ''));
+    if (newText === null) return;
+
+    entry.html = `<p>${newText}</p>`;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    renderEntries();
 }
 
 function getActiveView() {
