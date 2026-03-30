@@ -12,6 +12,29 @@
     <title>Dashboard - BuJo.io</title>
 </head>
 <body>
+  <main class="main">
+        <h1 class="mainTitle" id="greeting"></h1>
+        <p class="mainDescription"><time id="current-date"></time></p>
+
+        <section id="stats-section">
+            <h2 class="section-title">Entry Stats</h2>
+            <div class="stats-grid" id="stats-grid"></div>
+        </section>
+
+        <section id="week-section">
+            <h2 class="section-title">This Week</h2>
+            <div id="week-entries"></div>
+        </section>
+
+        <section id="oldest-task-section">
+            <h2 class="section-title">Oldest Open Task</h2>
+            <p id="oldest-task"></p>
+        </section>
+    </main>
+    <script src="./js/storage.js"></script>
+    <script src="./js/dashboard.js"></script>
+</body>
+</html>
     
 </body>
 </html>

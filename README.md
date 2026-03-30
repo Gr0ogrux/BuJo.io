@@ -28,3 +28,6 @@ Moved all localStorage logic out of index.js and imported it to storage.js.  Sta
 
 **03/24/2026**
 Moved all files out of public folder and removed folder.  Updated all links that previously directed to public folder.  Still working on bug for entry display.  Want to add feature that displays date entered for past entries.  Edited date ranges loaded for week, month, and year view in bujo.html.  Need to add feature that lets user select date when creating entries.  May need to limit it to events.
+
+**03/30/2026**
+Started building Dashboard page.  Currently able to render stats and show entries.  Need to add navigation to bujo.html and archive.html.
