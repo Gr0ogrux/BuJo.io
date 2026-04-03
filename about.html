@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+    <link rel="shortcut icon" href="./img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png" />
+    <link rel="manifest" href="./img/site.webmanifest" />
+    <title>About BuJo.io</title>
+</head>
+<body>
+    <main class="main">
+        <h1 class="main__title">About BuJo.io</h1>
+        <p class="main__description">Learn more about BuJo.io and its features.</p>
+
+        <nav class="view-nav">
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="bujo.html">Today</a>
+          <a href="bujo.html?view=week">This Week</a>
+          <a href="bujo.html?view=month">This Month</a>
+          <a href="bujo.html?view=year">This Year</a>
+          <a href="archive.html">Archive</a>
+          <a href="about.html">About</a>
+        </nav>
+        
+        <section>
+            <h2 class="section-title">What is BuJo.io?</h2>
+            <img src="./img/BuJoLogo.svg" alt="BuJo.io Logo" class="about-logo">
+            <p>BuJo.io is a digital bullet journal built for the modern web. Inspired by the analog rapid logging system popularized by Ryder Carroll, BuJo.io brings the flexibility and mindfulness of a physical bullet journal to any browser - without the notebook.
+                At its core, BuJo.io is built around three entry types: 
+                <ul>
+                    <li><strong>To-dos</strong> track tasks that need to get done, with the ability to mark them complete or migrate them forward when life gets in the way.</li>
+                    <li><strong>Events</strong> capture moments tied to a specific date, from holidays to personal milestones.</li>
+                    <li><strong>Memories</strong> serve as a space for notes, reflections, and anything worth remembering.</li>
+                </ul>
+            </p>
+            <p>Entries are organized across four views — Day, Week, Month, and Year — so users can zoom in on what's happening today or step back and see the bigger picture. The Archive lets users revisit any past period with the same flexible filtering, and the Dashboard gives a at-a-glance summary of entry statistics, this week's activity, and oldest open tasks.
+            BuJo.io is a personal tool, which means it remembers you. During setup, users enter their name, choose their timezone, select a visual theme — Light, Dark, or Paper — and set their preferred font size. These preferences are saved locally and applied across every page automatically.
+            Everything in BuJo.io lives in your browser. There are no accounts, no servers, and no data sent anywhere. Your journal is yours.</p>
+        </section>
+    </main>
+    <script src="./js/storage.js"></script>
+    <script src="./js/index.js"></script> 
+</body>
+</html>

@@ -35,4 +35,8 @@ Started building Dashboard page.  Currently able to render stats and show entrie
 **04/02/2026**
 Built Archive page.  Added function to disable date from progressing to the current date or any future events.  Set navigation bar to be uniform across all pages.  Added ability to select date when creating new entry.  Added dark and paper modes along with font selection to style.css.  
 
-**Next Steps** Implement my logo across all of the pages. Add an about.html.  Work some more on the nav bar.  Make "new entry" section on bujo.html into a pop-up.  Add responsive design.
+**04/03/2026** Built About page.  Added links to About to Dashboard, BuJo, and Archive pages.
+
+
+
+**Next Steps** Implement my logo across all of the pages. Work some more on the nav bar.  Make "new entry" section on bujo.html into a pop-up.  Add responsive design.
