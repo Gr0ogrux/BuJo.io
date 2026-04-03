@@ -1,10 +1,61 @@
 @import url("./reset.css");
 
+/* ─── Theme Variables ───────────────────────────────────────── */
+
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #fcfcfc;
+    --text-primary: #000000;
+    --text-secondary: #666666;
+    --text-tertiary: #999999;
+    --border-color: #dddddd;
+    --border-light: #f0f0f0;
+    --accent: #000000;
+    --accent-text: #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #242424;
+    --text-primary: #e8e8e8;
+    --text-secondary: #aaaaaa;
+    --text-tertiary: #666666;
+    --border-color: #333333;
+    --border-light: #2a2a2a;
+    --accent: #e8e8e8;
+    --accent-text: #1a1a1a;
+}
+
+[data-theme="paper"] {
+    --bg-primary: #f5f0e8;
+    --bg-secondary: #ede8dc;
+    --text-primary: #2c2416;
+    --text-secondary: #6b5d4f;
+    --text-tertiary: #9c8c7e;
+    --border-color: #c8b89a;
+    --border-light: #ddd4c0;
+    --accent: #2c2416;
+    --accent-text: #f5f0e8;
+}
+
+/* ─── Font Sizes ────────────────────────────────────────────── */
+
+[data-font-size="small"]  { font-size: 14px; }
+[data-font-size="medium"] { font-size: 16px; }
+[data-font-size="large"]  { font-size: 18px; }
+
+/* ─── Base ──────────────────────────────────────────────────── */
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
 .main {
     max-width: 600px;
     margin: 40px auto;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: var(--bg-primary);
 }
 
 .mainTitle {
@@ -14,13 +65,50 @@
 }
 
 #current-date {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 1.1rem;
     display: block;
     margin-bottom: 2rem;
 }
 
-.log-form {
+.hidden {
+    display: none;
+}
+
+/* ─── Navigation ────────────────────────────────────────────── */
+
+.view-nav {
+    display: flex;
+    gap: 8px;
+    margin: 1rem 0 2rem;
+    flex-wrap: wrap;
+}
+
+.view-nav a {
+    padding: 6px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+
+.view-nav a.active {
+    background-color: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+}
+
+.view-nav a:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ─── Form ──────────────────────────────────────────────────── */
+
+.log-form,
+.setup-form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -33,66 +121,141 @@
 }
 
 textarea,
+input[type="text"],
 input[type="date"],
-input[type="datetime-local"] {
+input[type="datetime-local"],
+select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background-color: #fcfcfc;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
-textarea:focus {
-    border-color: #000;
-    background-color: #fff;
-}
-
-.radio-group {
-    display: flex;
-    gap: 20px;
-    padding: 10px 0;
-}
-
-.radio-group input[type="radio"] {
-    appearance: auto;
-    margin-right: 5px;
+textarea:focus,
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: var(--accent);
+    background-color: var(--bg-primary);
 }
 
 .submit-btn {
-    background-color: #000;
-    color: #fff;
+    background-color: var(--accent);
+    color: var(--accent-text);
     padding: 15px;
     border-radius: 6px;
     font-weight: bold;
     text-align: center;
     transition: opacity 0.2s;
+    cursor: pointer;
 }
 
 .submit-btn:hover {
     opacity: 0.8;
 }
 
-#entries-list {
-    margin-top: 3rem;
-    border-top: 1px solid #eee;
-    padding-top: 2rem;
+/* ─── Radio / Log Type Selector ─────────────────────────────── */
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+    flex-wrap: wrap;
 }
 
-/* Quill editor */
+.radio-group input[type="radio"] {
+    display: none;
+}
+
+.log-type-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.log-type-label:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+input[type="radio"]:checked + .log-type-label {
+    background-color: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+}
+
+input[type="radio"]:checked + .log-type-label .log-type-bullet--todo::before {
+    background-color: var(--accent-text);
+}
+
+input[type="radio"]:checked + .log-type-label .log-type-bullet--event,
+input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
+    color: var(--accent-text);
+}
+
+.log-type-bullet {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    font-size: 0.85rem;
+}
+
+.log-type-bullet--todo::before {
+    content: '';
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--text-primary);
+    margin: 0 auto;
+}
+
+.log-type-bullet--event {
+    font-size: 0.7rem;
+    color: var(--text-primary);
+}
+
+.log-type-bullet--memory {
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.setup-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.setup-icon--small  { font-size: 0.7rem; }
+.setup-icon--medium { font-size: 0.9rem; }
+.setup-icon--large  { font-size: 1.1rem; }
+
+/* ─── Quill Editor ──────────────────────────────────────────── */
 
 .ql-toolbar.ql-snow {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 6px 6px 0 0;
-    background-color: #fafafa;
+    background-color: var(--bg-secondary);
 }
 
 .ql-container.ql-snow {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-top: none;
     border-radius: 0 0 6px 6px;
-    background-color: #fcfcfc;
+    background-color: var(--bg-secondary);
     font-size: 1rem;
     font-family: inherit;
+    color: var(--text-primary);
 }
 
 .ql-editor {
@@ -101,9 +264,11 @@ textarea:focus {
 }
 
 .ql-editor.ql-blank::before {
-    color: #aaa;
+    color: var(--text-tertiary);
     font-style: normal;
 }
+
+/* ─── Bullets ───────────────────────────────────────────────── */
 
 .bullet {
     display: inline-flex;
@@ -121,35 +286,42 @@ textarea:focus {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background-color: #222;
+    background-color: var(--text-primary);
     margin: 0 auto;
 }
 
 .bullet--event {
     font-size: 0.75rem;
-    color: #222;
+    color: var(--text-primary);
 }
 
 .bullet--memory {
     font-weight: 700;
     font-size: 1rem;
-    color: #555;
+    color: var(--text-secondary);
 }
 
 .bullet--migrated {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #666;
+    color: var(--text-tertiary);
     line-height: 1;
 }
 
+/* ─── Entry Rows ────────────────────────────────────────────── */
+
+#entries-list {
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-light);
+    padding-top: 2rem;
+}
 
 .entry-row {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-light);
 }
 
 .entry-row:last-child {
@@ -164,6 +336,7 @@ textarea:focus {
     flex: 1;
     font-size: 0.95rem;
     line-height: 1.6;
+    color: var(--text-primary);
 }
 
 .entry-body ul,
@@ -172,13 +345,19 @@ textarea:focus {
     margin: 0.25rem 0;
 }
 
+.entry-date {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    margin-left: 6px;
+}
+
 .entry-row--done .entry-body {
     text-decoration: line-through;
     opacity: 0.45;
 }
 
 .entry-row--done .bullet--todo::before {
-    background-color: #999;
+    background-color: var(--text-tertiary);
 }
 
 .entry-row--migrated .entry-body {
@@ -186,6 +365,7 @@ textarea:focus {
     font-style: italic;
 }
 
+/* ─── Entry Actions ─────────────────────────────────────────── */
 
 .entry-actions {
     display: flex;
@@ -199,20 +379,14 @@ textarea:focus {
     opacity: 1;
 }
 
-.entry-date {
-    font-size: 0.8rem;
-    color: #999;
-    margin-left: 6px;
-}
-
 .action-btn {
     background: none;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.8rem;
     padding: 3px 7px;
-    color: #888;
+    color: var(--text-tertiary);
     transition: color 0.15s, border-color 0.15s, background 0.15s;
     line-height: 1;
 }
@@ -229,51 +403,109 @@ textarea:focus {
     background: #ebf8ff;
 }
 
-.action-btn--delete:hover {
-    color: #555;
-    border-color: #aaa;
-    background: #f7f7f7;
-}
-
-.hidden {
-    display: none;
-}
-
-#holidays-toggle {
-    user-select: none;
-}
-
-.view-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 2rem;
-}
-
-.view-nav a {
-    padding: 6px 14px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.view-nav a.active {
-    background-color: #000;
-    color: #fff;
-    border-color: #000;
-}
-
 .action-btn--edit:hover {
     color: #805ad5;
     border-color: #805ad5;
     background: #faf5ff;
 }
 
+.action-btn--delete:hover {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+    background: var(--bg-secondary);
+}
+
+/* ─── Inline Edit ───────────────────────────────────────────── */
+
+.edit-input {
+    width: 100%;
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.action-btn--save:hover {
+    color: #38a169;
+    border-color: #38a169;
+    background: #f0fff4;
+}
+
+/* ─── Holidays ──────────────────────────────────────────────── */
+
+#holidays-toggle {
+    user-select: none;
+    color: var(--text-primary);
+}
+
+.holiday-card {
+    border: 0.5px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.add-holiday-btn {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 6px;
+    background: none;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+}
+
+.add-holiday-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ─── Filter Bar ────────────────────────────────────────────── */
+
+.filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    background: none;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+}
+
+.filter-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+}
+
+/* ─── Dashboard ─────────────────────────────────────────────── */
+
 .section-title {
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 1rem;
     margin-top: 2rem;
+    color: var(--text-primary);
 }
 
 .stats-grid {
@@ -283,24 +515,37 @@ textarea:focus {
 }
 
 .stat-card {
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 16px 12px;
     text-align: center;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background-color: var(--bg-secondary);
+}
+
+.stat-card:hover {
+    border-color: var(--text-secondary);
+}
+
+.stat-card--active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
 }
 
 .stat-value {
     font-size: 2rem;
     font-weight: 800;
     line-height: 1;
+    color: var(--text-primary);
 }
 
 .stat-label {
     font-size: 0.8rem;
-    color: #999;
+    color: var(--text-tertiary);
 }
 
 .week-group {
@@ -310,7 +555,7 @@ textarea:focus {
 .week-date {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #666;
+    color: var(--text-secondary);
     margin-bottom: 6px;
 }
 
@@ -318,14 +563,14 @@ textarea:focus {
     display: flex;
     gap: 10px;
     padding: 6px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-light);
     font-size: 0.9rem;
     align-items: baseline;
 }
 
 .week-entry-type {
     font-size: 0.75rem;
-    color: #999;
+    color: var(--text-tertiary);
     min-width: 52px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -333,19 +578,84 @@ textarea:focus {
 
 .week-entry-body {
     flex: 1;
-    color: #333;
+    color: var(--text-primary);
 }
 
-.stat-card {
+/* ─── Archive ───────────────────────────────────────────────── */
+
+.archive-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1.5rem 0;
+    gap: 12px;
+}
+
+.archive-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    background: none;
+    color: var(--text-secondary);
+    transition: border-color 0.15s, color 0.15s;
 }
 
-.stat-card:hover {
-    border-color: #aaa;
+.archive-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
-.stat-card--active {
-    border-color: #000;
-    box-shadow: 0 0 0 1px #000;
+.archive-period {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    text-align: center;
+    flex: 1;
+}
+
+.archive-date-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 1.5rem 0 0.5rem;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+/* ─── Responsive ────────────────────────────────────────────── */
+
+@media (min-width: 900px) {
+    .main {
+        max-width: 720px;
+    }
+}
+
+@media (max-width: 430px) {
+    .main {
+        padding: 14px;
+        margin: 12px auto;
+    }
+
+    .mainTitle {
+        font-size: 1.8rem;
+    }
+
+    .radio-group {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .entry-actions {
+        opacity: 1;
+    }
+
+    .ql-toolbar button {
+        min-width: 28px;
+        min-height: 28px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    }
 }

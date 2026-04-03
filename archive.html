@@ -4,14 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
-    <link rel="shortcut icon" href="./img/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png" />
-    <link rel="manifest" href="./img/site.webmanifest" />
-    <title>Dashboard - BuJo.io</title>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/public/img/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/public/img/favicon.svg" />
+    <link rel="shortcut icon" href="/public/img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/img/apple-touch-icon.png" />
+    <link rel="manifest" href="/public/img/site.webmanifest" />
+    <title>Archive - BuJo.io</title>
 </head>
 <body>
-    
+    <main class="main">
+        <h1 class="mainTitle" id="archive-title">Archive</h1>
+        <p class="mainDescription"><time id="current-date"></time></p>
+
+        <nav class="view-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="bujo.html">Today</a>
+            <a href="archive.html">Day</a>
+            <a href="archive.html?view=week">Week</a>
+            <a href="archive.html?view=month">Month</a>
+            <a href="archive.html?view=year">Year</a>
+        </nav>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="todo">To-Do</button>
+            <button class="filter-btn" data-filter="event">Event</button>
+            <button class="filter-btn" data-filter="memory">Memory</button>
+        </div>
+
+        <div class="archive-nav">
+            <button class="archive-btn" id="prev-btn">← Previous</button>
+            <span class="archive-period" id="archive-period"></span>
+            <button class="archive-btn" id="next-btn">Next →</button>
+        </div>
+
+        <section id="entries-list"></section>
+    </main>
+    <script src="./js/storage.js"></script>
+    <script src="./js/archive.js"></script>
 </body>
 </html>

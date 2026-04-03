@@ -21,7 +21,7 @@ Changed and removed some HTML files.  Added setup.js.  Added basic css styling w
 Implemented QuillJS into the project for easier text editing for the users.  Will begin working on the implementation of URL parameters for different journal entries.
 
 **03/22/2026**
-Added Nager.Date API to project to help users see upcoming holidays at-a-glance when planning their days.
+Added Nager.Date API (https://date.nager.at/API) to project to help users see upcoming holidays at-a-glance when planning their days.
 
 **03/23/2026**
 Moved all localStorage logic out of index.js and imported it to storage.js.  Started building url paremeters in bujo.html.  Discovered bug where entries didn't display properly across all parameters.  Will address.
@@ -31,3 +31,8 @@ Moved all files out of public folder and removed folder.  Updated all links that
 
 **03/30/2026**
 Started building Dashboard page.  Currently able to render stats and show entries.  Added navigation links to bujo.html and archive, as well as nav to dashboard from bujo.  Need to build archive page.
+
+**04/02/2026**
+Built Archive page.  Added function to disable date from progressing to the current date or any future events.  Set navigation bar to be uniform across all pages.  Added ability to select date when creating new entry.  Added dark and paper modes along with font selection to style.css.  
+
+**Next Steps** Implement my logo across all of the pages. Add an about.html.  Work some more on the nav bar.  Make "new entry" section on bujo.html into a pop-up.  Add responsive design.

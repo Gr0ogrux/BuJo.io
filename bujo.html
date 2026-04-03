@@ -14,6 +14,10 @@
 </head>
 <body>
     <main class="main">
+        <h1 class="mainTitle">Today</h1>
+        <p class="mainDescription">
+            <time id="current-date"></time>
+        </p>
         <nav class="view-nav">
             <a href="dashboard.html">Dashboard</a>
             <a href="bujo.html">Today</a>
@@ -22,22 +26,36 @@
             <a href="bujo.html?view=year">This Year</a>
             <a href="archive.html">Archive</a>
         </nav>
-        <h1 class="mainTitle">Today</h1>
-        <p class="mainDescription">
-            <time id="current-date"></time>
-        </p>
         
+        <section id="entries-list"></section>
+
         <form class="log-form" id="log-form" action="#" method="post">
             <div class="form-group">
                 <label>Log Type:</label>
                 <div class="radio-group">
                     <input type="radio" id="todo"   name="log-type" value="todo" required>
-                    <label for="todo">To-Do</label>
+                    <label for="todo" class="log-type-label">
+                        <span class="log-type-bullet log-type-bullet--todo"></span>
+                        To-Do
+                    </label>
+
                     <input type="radio" id="event"  name="log-type" value="event">
-                    <label for="event">Event</label>
+                    <label for="event" class="log-type-label">
+                        <span class="log-type-bullet log-type-bullet--event">◆</span>
+                        Event
+                    </label>
+
                     <input type="radio" id="memory" name="log-type" value="memory">
-                    <label for="memory">Memory</label>
+                    <label for="memory" class="log-type-label">
+                        <span class="log-type-bullet log-type-bullet--memory">#</span>
+                        Memory
+                    </label>
                 </div>
+            </div>
+
+            <div class="form-group" id="date-group">
+                <label for="log-date">Date:</label>
+                <input type="date" id="log-date" name="log-date">
             </div>
 
             <div class="form-group">
@@ -56,7 +74,6 @@
             <div id="holiday-list" class="hidden"></div>
         </section>
 
-        <section id="entries-list"></section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script src="./js/storage.js"></script>

@@ -6,11 +6,16 @@ function loadEntries() {
     catch { return []; }
 }
 
-function saveEntry(type, html) {
+function saveEntry(type, html, date) {
     const entries = loadEntries();
-    entries.push({ id: Date.now(), type, html, date: todayKey(), state: 'active' });
+    entries.push({ 
+        id: Date.now(), 
+        type, 
+        html, 
+        date: date || todayKey(), 
+        state: 'active' 
+    });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    renderEntries();
 }
 
 function updateEntryState(id, state) {
@@ -32,4 +37,17 @@ function loadUserSettings() {
 
 function saveUserSettings(settings) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+function applyUserSettings() {
+    const settings = loadUserSettings();
+    if (!settings) return;
+
+    if (settings.visualPreference) {
+        document.body.setAttribute('data-theme', settings.visualPreference);
+    }
+
+    if (settings.fontSize) {
+        document.body.setAttribute('data-font-size', settings.fontSize);
+    }
 }

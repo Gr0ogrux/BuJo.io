@@ -42,23 +42,41 @@
                 <label>Visual Preference:</label>
                 <div class="radio-group">
                     <input type="radio" id="dark" name="visual-preference" value="dark" required>
-                    <label for="dark">Dark Mode</label>
-                    <input type="radio" id="light" name="visual-preference" value="light">
-                    <label for="light">Light Mode</label>
+                    <label for="dark" class="log-type-label">
+                        <span class="setup-icon">◐</span>
+                        Dark Mode
+                    </label>
+                    <input type="radio" id="light" name="visual-preference" value="light" checked>
+                    <label for="light" class="log-type-label">
+                        <span class="setup-icon">○</span>
+                        Light Mode
+                    </label>
                     <input type="radio" id="paper" name="visual-preference" value="paper">
-                    <label for="paper">Paper Mode</label>
+                    <label for="paper" class="log-type-label">
+                        <span class="setup-icon">📄</span>
+                        Paper Mode
+                    </label>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label>Font Size:</label>
                 <div class="radio-group">
                     <input type="radio" id="small" name="font-size" value="small" required>
-                    <label for="small">Small</label>
-                    <input type="radio" id="medium" name="font-size" value="medium">
-                    <label for="medium">Medium</label>
+                    <label for="small" class="log-type-label">
+                        <span class="setup-icon setup-icon--small">A</span>
+                        Small
+                    </label>
+                    <input type="radio" id="medium" name="font-size" value="medium" checked>
+                    <label for="medium" class="log-type-label">
+                        <span class="setup-icon setup-icon--medium">A</span>
+                        Medium
+                    </label>
                     <input type="radio" id="large" name="font-size" value="large">
-                    <label for="large">Large</label>
+                    <label for="large" class="log-type-label">
+                        <span class="setup-icon setup-icon--large">A</span>
+                        Large
+                    </label>
                 </div>
             </div>
             
