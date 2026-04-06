@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('bujo_user_settings'));
+                if (settings && settings.visualPreference) {
+                    document.documentElement.setAttribute('data-theme', settings.visualPreference);
+                }
+                if (settings && settings.fontSize) {
+                    document.documentElement.setAttribute('data-font-size', settings.fontSize);
+                }
+            } catch(e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
@@ -13,6 +26,9 @@
 </head>
 <body>
     <main class="main">
+        <a href="index.html" class="site-logo-link">
+            <img src="./img/BuJoLogo.png" alt="BuJo.io" class="site-logo" id="site-logo">
+        </a>
         <h1 class="main__title">BuJo.io Setup</h1>
         <p class="main__description">Let's get to know each other.</p>
         

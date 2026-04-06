@@ -37,6 +37,4 @@ Built Archive page.  Added function to disable date from progressing to the curr
 
 **04/03/2026** Built About page.  Added links to About to Dashboard, BuJo, and Archive pages.
 
-
-
-**Next Steps** Implement my logo across all of the pages. Work some more on the nav bar.  Make "new entry" section on bujo.html into a pop-up.  Add responsive design.
+**04/05/2026 (and 04/04/2026)** Edited About page.  Fixed issue with logo not loading correctly (because I uploaded the wrong kind of logo). Fixed CSS dark mode flashing issue (Thank you to Tyler Collins for helping me find that solution.)  Added logo to all pages.  Added responsive design.  Made "new entry" section into a pop-up for mobile view.  Created a new problem in that the new entry option now disappears completely on desktop view.

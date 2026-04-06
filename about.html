@@ -3,46 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('bujo_user_settings'));
+                if (settings && settings.visualPreference) {
+                    document.documentElement.setAttribute('data-theme', settings.visualPreference);
+                }
+                if (settings && settings.fontSize) {
+                    document.documentElement.setAttribute('data-font-size', settings.fontSize);
+                }
+            } catch(e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
     <link rel="shortcut icon" href="./img/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png" />
     <link rel="manifest" href="./img/site.webmanifest" />
-    <title>About BuJo.io</title>
+    <title>About - BuJo.io</title>
 </head>
 <body>
     <main class="main">
-        <h1 class="main__title">About BuJo.io</h1>
-        <p class="main__description">Learn more about BuJo.io and its features.</p>
+        <a href="index.html" class="site-logo-link">
+            <img src="./img/BuJoLogo.png" alt="BuJo.io" class="site-logo" id="site-logo">
+        </a>
+        <h1 class="mainTitle">About BuJo.io</h1>
+        <p class="mainDescription">Learn more about BuJo.io and its features.</p>
 
-        <nav class="view-nav">
-          <a href="dashboard.html" class="active">Dashboard</a>
-          <a href="bujo.html">Today</a>
-          <a href="bujo.html?view=week">This Week</a>
-          <a href="bujo.html?view=month">This Month</a>
-          <a href="bujo.html?view=year">This Year</a>
-          <a href="archive.html">Archive</a>
-          <a href="about.html">About</a>
+        <nav class="site-nav">
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bujo.html">Today</a>
+                <a href="bujo.html?view=week">This Week</a>
+                <a href="bujo.html?view=month">This Month</a>
+                <a href="bujo.html?view=year">This Year</a>
+                <a href="archive.html">Archive</a>
+                <a href="about.html">About</a>
+                <a href="setup.html">Settings</a>
+            </div>
         </nav>
-        
+
         <section>
             <h2 class="section-title">What is BuJo.io?</h2>
-            <img src="./img/BuJoLogo.svg" alt="BuJo.io Logo" class="about-logo">
-            <p>BuJo.io is a digital bullet journal built for the modern web. Inspired by the analog rapid logging system popularized by Ryder Carroll, BuJo.io brings the flexibility and mindfulness of a physical bullet journal to any browser - without the notebook.
-                At its core, BuJo.io is built around three entry types: 
-                <ul>
-                    <li><strong>To-dos</strong> track tasks that need to get done, with the ability to mark them complete or migrate them forward when life gets in the way.</li>
-                    <li><strong>Events</strong> capture moments tied to a specific date, from holidays to personal milestones.</li>
-                    <li><strong>Memories</strong> serve as a space for notes, reflections, and anything worth remembering.</li>
-                </ul>
-            </p>
-            <p>Entries are organized across four views — Day, Week, Month, and Year — so users can zoom in on what's happening today or step back and see the bigger picture. The Archive lets users revisit any past period with the same flexible filtering, and the Dashboard gives a at-a-glance summary of entry statistics, this week's activity, and oldest open tasks.
-            BuJo.io is a personal tool, which means it remembers you. During setup, users enter their name, choose their timezone, select a visual theme — Light, Dark, or Paper — and set their preferred font size. These preferences are saved locally and applied across every page automatically.
-            Everything in BuJo.io lives in your browser. There are no accounts, no servers, and no data sent anywhere. Your journal is yours.</p>
+            <img src="./img/BuJoLogo.png" alt="BuJo.io Logo" class="about-logo" id="site-logo">
+            <p>BuJo.io is a digital bullet journal built for the modern web. Inspired by the analog rapid logging system popularized by Ryder Carroll, BuJo.io brings the flexibility and mindfulness of a physical bullet journal to any browser without the notebook.</p>
+            <p>At its core, BuJo.io is built around three entry types:</p>
+            <ul class="about-list">
+                <li><strong>To-dos</strong> track tasks that need to get done, with the ability to mark them complete or migrate them forward when life gets in the way.</li>
+                <li><strong>Events</strong> capture moments tied to a specific date, from holidays to personal milestones.</li>
+                <li><strong>Memories</strong> serve as a space for notes, reflections, and anything worth remembering.</li>
+            </ul>
+            <p>Entries are organized across four views (Day, Week, Month, and Year) so users can zoom in on what's happening today or step back and see the bigger picture. The Archive lets users revisit any past period with the same flexible filtering, and the Dashboard gives an at-a-glance summary of entry statistics, this week's activity, and oldest open tasks.</p>
+            <p>BuJo.io is a personal tool, which means it remembers you. During setup, users enter their name, choose their timezone, select a visual theme (Light, Dark, or Paper) and set their preferred font size. These preferences are saved locally and applied across every page automatically.</p>
+            <p>Everything in BuJo.io lives in your browser. There are no accounts, no servers, and no data sent anywhere. Your journal is yours.</p>
         </section>
+
+        <section>
+            <h2 class="section-title">How to Use BuJo.io</h2>
+
+            <h3 class="about-subheading">Getting Started</h3>
+            <p>When you first open BuJo.io, you'll be taken through a quick setup process. Enter your name, choose your timezone, pick a visual theme, and select a font size. These preferences are saved to your browser and applied automatically every time you return.</p>
+
+            <h3 class="about-subheading">Logging Entries</h3>
+            <p>Head to the Today page to start logging. Every entry has a type:</p>
+            <ul class="about-list">
+                <li><strong>To-Do</strong> — something you need to do. Mark it complete with ✕, migrate it forward with ›, or delete it with ⌫.</li>
+                <li><strong>Event</strong> — something happening on a specific date. You can edit or delete events after they're logged.</li>
+                <li><strong>Memory</strong> — a note, reflection, or anything you want to remember. No action required.</li>
+            </ul>
+            <p>You can choose the date for any entry — it defaults to today, but you can log events and tasks for any date you'd like.</p>
+
+            <h3 class="about-subheading">Navigating Views</h3>
+            <p>Use the navigation bar at the top of any page to switch between views. <strong>Today</strong> shows just the current day. <strong>This Week</strong> shows the next seven days. <strong>This Month</strong> and <strong>This Year</strong> broaden the window further. Upcoming holidays pulled from a public calendar are also available on the Today page so you can add any of them directly to your journal with one click.</p>
+
+            <h3 class="about-subheading">The Dashboard</h3>
+            <p>The Dashboard gives you a bird's-eye view of your journal. See how many entries you've logged by type, check this week's activity at a glance, and find out how long your oldest open task has been sitting around. Click any stat card to filter and explore that group of entries.</p>
+
+            <h3 class="about-subheading">The Archive</h3>
+            <p>The Archive works just like the main journal view, but for the past. Use the Previous and Next buttons to step through past days, weeks, months, or years. Filter by entry type to find exactly what you're looking for. If you find an old to-do that never got done, you can migrate it straight to today from the Archive.</p>
+        </section>
+
+        <section>
+            <h2 class="section-title">About the Developer</h2>
+            <div class="about-developer">
+                <h3 class="about-dev-name">Andy Fields</h3>
+                <p>I'm someone who's always trying to balance a lot: work, responsibilities, ideas, and a constant stream of things I don't want to forget. I've spent years in leadership and customer-facing roles, which taught me how important organization, clarity, and consistency really are. At the same time, I've had to figure out how to manage distractions and stay focused, especially when my mind wants to go in a hundred different directions. That tension between structure and chaos is a big part of who I am and it's exactly what led me to build something better for myself.</p>
+                <h3 class="about-subheading">Why I Built BuJo.io</h3>
+                <p>I built BuJo.io because I needed a system that actually worked for real life, not just in theory. Traditional planners felt too rigid, and most apps either overcomplicated things or didn't adapt to how I think. I wanted something flexible, simple, and intentional. I wanted a tool that helps you capture ideas, stay organized, and keep moving forward without getting overwhelmed. BuJo.io is my attempt to bring the clarity of bullet journaling into a digital space, while still keeping the freedom and creativity that makes the system powerful.</p>
+                <a href="https://gr0ogrux.github.io/" class="about-link" target="_blank">Visit my portfolio →</a>
+            </div>
+        </section>
+
     </main>
     <script src="./js/storage.js"></script>
-    <script src="./js/index.js"></script> 
+    <script>
+        window.onload = function () { applyUserSettings(); };
+    </script>
 </body>
 </html>

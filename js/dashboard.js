@@ -166,6 +166,7 @@ function renderFilteredEntries() {
 
 window.onload = function () {
     applyUserSettings();
+    initNav();
     greetUser();
     displayDate();
     renderStats();

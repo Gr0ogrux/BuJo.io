@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('bujo_user_settings'));
+                if (settings && settings.visualPreference) {
+                    document.documentElement.setAttribute('data-theme', settings.visualPreference);
+                }
+                if (settings && settings.fontSize) {
+                    document.documentElement.setAttribute('data-font-size', settings.fontSize);
+                }
+            } catch(e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="./css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
@@ -14,59 +27,81 @@
 </head>
 <body>
     <main class="main">
+        <a href="index.html" class="site-logo-link">
+            <img src="./img/BuJoLogo.png" alt="BuJo.io" class="site-logo" id="site-logo">
+        </a>
         <h1 class="mainTitle">Today</h1>
         <p class="mainDescription">
             <time id="current-date"></time>
         </p>
-        <nav class="view-nav">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="bujo.html">Today</a>
-            <a href="bujo.html?view=week">This Week</a>
-            <a href="bujo.html?view=month">This Month</a>
-            <a href="bujo.html?view=year">This Year</a>
-            <a href="archive.html">Archive</a>
-            <a href="about.html">About</a>
+        <nav class="site-nav">
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bujo.html">Today</a>
+                <a href="bujo.html?view=week">This Week</a>
+                <a href="bujo.html?view=month">This Month</a>
+                <a href="bujo.html?view=year">This Year</a>
+                <a href="archive.html">Archive</a>
+                <a href="about.html">About</a>
+                <a href="setup.html">Settings</a>
+            </div>
         </nav>
         
         <section id="entries-list"></section>
 
-        <form class="log-form" id="log-form" action="#" method="post">
-            <div class="form-group">
-                <label>Log Type:</label>
-                <div class="radio-group">
-                    <input type="radio" id="todo"   name="log-type" value="todo" required>
-                    <label for="todo" class="log-type-label">
-                        <span class="log-type-bullet log-type-bullet--todo"></span>
-                        To-Do
-                    </label>
+        <!-- Floating button (mobile only) -->
+        <button class="fab" id="fab" aria-label="New entry">+</button>
 
-                    <input type="radio" id="event"  name="log-type" value="event">
-                    <label for="event" class="log-type-label">
-                        <span class="log-type-bullet log-type-bullet--event">◆</span>
-                        Event
-                    </label>
-
-                    <input type="radio" id="memory" name="log-type" value="memory">
-                    <label for="memory" class="log-type-label">
-                        <span class="log-type-bullet log-type-bullet--memory">#</span>
-                        Memory
-                    </label>
+        <!-- Modal overlay -->
+        <div class="modal-overlay" id="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">New Entry</h2>
+                    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
                 </div>
-            </div>
 
-            <div class="form-group" id="date-group">
-                <label for="log-date">Date:</label>
-                <input type="date" id="log-date" name="log-date">
-            </div>
+                <form class="log-form" id="log-form" action="#" method="post">
+                    <div class="form-group">
+                        <label>Log Type:</label>
+                        <div class="radio-group">
+                            <input type="radio" id="todo" name="log-type" value="todo" required>
+                            <label for="todo" class="log-type-label">
+                                <span class="log-type-bullet log-type-bullet--todo"></span>
+                                To-Do
+                            </label>
+                            <input type="radio" id="event" name="log-type" value="event">
+                            <label for="event" class="log-type-label">
+                                <span class="log-type-bullet log-type-bullet--event">◆</span>
+                                Event
+                            </label>
+                            <input type="radio" id="memory" name="log-type" value="memory">
+                            <label for="memory" class="log-type-label">
+                                <span class="log-type-bullet log-type-bullet--memory">#</span>
+                                Memory
+                            </label>
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label for="log-entry">Log Entry:</label>
-                <div id="editor"></div>
-                <input type="hidden" id="log-entry" name="log-entry">
-            </div>
+                    <div class="form-group" id="date-group">
+                        <label for="log-date">Date:</label>
+                        <input type="date" id="log-date" name="log-date">
+                    </div>
 
-            <button type="submit" class="submit-btn">Save Log</button>
-        </form>
+                    <div class="form-group">
+                        <label for="log-entry">Log Entry:</label>
+                        <div id="editor"></div>
+                        <input type="hidden" id="log-entry" name="log-entry">
+                    </div>
+
+                    <button type="submit" class="submit-btn">Save Log</button>
+                </form>
+            </div>
+        </div>
 
         <section id="holidays-section" class="collapsed">
             <h2 id="holidays-toggle" style="cursor: pointer;">

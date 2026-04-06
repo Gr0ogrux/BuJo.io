@@ -314,6 +314,32 @@ function editEntry(id) {
     body.querySelector('.edit-input').focus();
 }
 
+// ─── Modal ────────────────────────────────────────────────────
+
+function initModal() {
+    const fab     = document.getElementById('fab');
+    const overlay = document.getElementById('modal-overlay');
+    const closeBtn = document.getElementById('modal-close');
+
+    if (!fab || !overlay) return;
+
+    fab.addEventListener('click', () => {
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    });
+
+    function closeModal() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+    });
+}
+
 // ─── Quill Editor ─────────────────────────────────────────────
 
 function initQuill() {
@@ -358,12 +384,26 @@ function initQuill() {
 
         const selectedDate = document.getElementById('log-date').value || todayKey();
         saveEntry(logTypeInput.value, quill.root.innerHTML, selectedDate);
+        renderEntries();
+
+        saveEntry(logTypeInput.value, quill.root.innerHTML, selectedDate);
+        renderEntries();
+
+        const overlay = document.getElementById('modal-overlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
 
         quill.setContents([]);
         form.reset();
         if (dateInput) dateInput.value = todayKey();
-    });
-}
+
+                quill.setContents([]);
+                form.reset();
+                if (dateInput) dateInput.value = todayKey();
+            });
+        }
 
 // ─── Init ─────────────────────────────────────────────────────
 
@@ -373,6 +413,7 @@ window.onload = async function () {
     displayCurrentDate();
     setActiveViewLink();
     initQuill();
+    initModal();
     renderEntries();
 
     const holidays = await fetchUpcomingHolidays();

@@ -241,6 +241,7 @@ window.onload = function () {
         return;
     }
     applyUserSettings();
+    initNav();
     updateTitle();
     updatePeriodLabel();
     setActiveViewLink();

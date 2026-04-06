@@ -1,10 +1,44 @@
+function prefillForm() {
+    const settings = loadUserSettings();
+    if (!settings || !settings.name) return;
+
+    document.getElementById('name').value = settings.name || '';
+
+    const timezone = document.getElementById('timezone');
+    if (settings.timezone) timezone.value = settings.timezone;
+
+    if (visualRadio) {
+        visualRadio.checked = true;
+        document.documentElement.setAttribute('data-theme', settings.visualPreference);
+    }
+
+    if (fontRadio) {
+        fontRadio.checked = true;
+        document.documentElement.setAttribute('data-font-size', settings.fontSize);
+    }
+}
+
+
+document.querySelectorAll('input[name="visual-preference"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        document.documentElement.setAttribute('data-theme', radio.value);
+    });
+});
+
+document.querySelectorAll('input[name="font-size"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        document.documentElement.setAttribute('data-font-size', radio.value);
+    });
+});
+
+
 const setupForm = document.querySelector('.setup-form');
 
 setupForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const formData = new FormData(setupForm);
-    
+
     const userSettings = {
         name: formData.get('name'),
         timezone: formData.get('timezone'),
@@ -14,17 +48,9 @@ setupForm.addEventListener('submit', (e) => {
     };
 
     saveUserSettings(userSettings);
-
-    window.location.href = 'dashboard.html';});
-
-document.querySelectorAll('input[name="visual-preference"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-        document.body.setAttribute('data-theme', radio.value);
-    });
+    localStorage.setItem('hasCompletedSetup', 'true');
+    window.location.href = 'dashboard.html';
 });
 
-document.querySelectorAll('input[name="font-size"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-        document.body.setAttribute('data-font-size', radio.value);
-    });
-});
+
+prefillForm();

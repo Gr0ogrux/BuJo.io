@@ -44,10 +44,27 @@ function applyUserSettings() {
     if (!settings) return;
 
     if (settings.visualPreference) {
-        document.body.setAttribute('data-theme', settings.visualPreference);
+        document.documentElement.setAttribute('data-theme', settings.visualPreference);
     }
-
     if (settings.fontSize) {
-        document.body.setAttribute('data-font-size', settings.fontSize);
+        document.documentElement.setAttribute('data-font-size', settings.fontSize);
     }
+}
+
+function initNav() {
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    if (!hamburger || !navLinks) return;
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        navLinks.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+            hamburger.classList.remove('open');
+            navLinks.classList.remove('open');
+        }
+    });
 }

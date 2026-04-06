@@ -3,6 +3,19 @@
 <head>
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('bujo_user_settings'));
+                if (settings && settings.visualPreference) {
+                    document.documentElement.setAttribute('data-theme', settings.visualPreference);
+                }
+                if (settings && settings.fontSize) {
+                    document.documentElement.setAttribute('data-font-size', settings.fontSize);
+                }
+            } catch(e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
@@ -13,17 +26,28 @@
 </head>
 <body>
   <main class="main">
+        <a href="index.html" class="site-logo-link">
+            <img src="./img/BuJoLogo.png" alt="BuJo.io" class="site-logo" id="site-logo">
+        </a>
         <h1 class="mainTitle" id="greeting"></h1>
         <p class="mainDescription"><time id="current-date"></time></p>
 
-        <nav class="view-nav">
-          <a href="dashboard.html" class="active">Dashboard</a>
-          <a href="bujo.html">Today</a>
-          <a href="bujo.html?view=week">This Week</a>
-          <a href="bujo.html?view=month">This Month</a>
-          <a href="bujo.html?view=year">This Year</a>
-          <a href="archive.html">Archive</a>
-          <a href="about.html">About</a>
+         <nav class="site-nav">
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="bujo.html">Today</a>
+                <a href="bujo.html?view=week">This Week</a>
+                <a href="bujo.html?view=month">This Month</a>
+                <a href="bujo.html?view=year">This Year</a>
+                <a href="archive.html">Archive</a>
+                <a href="about.html">About</a>
+                <a href="setup.html">Settings</a>
+            </div>
         </nav>
 
         <section id="stats-section">

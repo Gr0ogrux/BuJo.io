@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        (function() {
+            try {
+                const settings = JSON.parse(localStorage.getItem('bujo_user_settings'));
+                if (settings && settings.visualPreference) {
+                    document.documentElement.setAttribute('data-theme', settings.visualPreference);
+                }
+                if (settings && settings.fontSize) {
+                    document.documentElement.setAttribute('data-font-size', settings.fontSize);
+                }
+            } catch(e) {}
+        })();
+    </script>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" type="image/png" href="./img/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
@@ -12,12 +25,14 @@
     <title>BuJo.io</title>
 </head>
 <body>
-    <main class="main">
-        <h1 class="main__title">BuJo.io</h1>
-        <p class="main__description">Digital mindfulness via rapid logging.</p>
-        <a href="#" id="start-link">Click Here to Get Started</a>
+    <main class="main landing">
+        <img src="./img/BuJoLogo.png" alt="BuJo.io Logo" class="landing-logo" id="site-logo">
+        <p class="landing-tagline">Digital mindfulness via rapid logging.</p>
+        <p class="landing-description">A personal bullet journal that lives in your browser. Capture tasks, events, and memories. Find them again when you need them.</p>
+        <a href="#" id="start-link" class="landing-btn">Get Started</a>
+        <p class="landing-about"><a href="about.html">Learn more about BuJo.io →</a></p>
     </main>
+    <script src="./js/storage.js"></script>
     <script src="./js/index.js"></script>
-    
 </body>
 </html>
