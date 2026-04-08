@@ -49,7 +49,7 @@ function isInView(dateString, view) {
 
 function setActiveViewLink() {
     const view = getActiveView();
-    document.querySelectorAll('.view-nav a').forEach(a => {
+    document.querySelectorAll('.nav-links a').forEach(a => {
         if (!a.href.includes('bujo.html')) return;
         const params = new URLSearchParams(a.search);
         const linkView = params.get('view') || 'day';
