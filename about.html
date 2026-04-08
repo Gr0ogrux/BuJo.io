@@ -52,7 +52,7 @@
 
         <section>
             <h2 class="section-title">What is BuJo.io?</h2>
-            <img src="./img/BuJoLogo.png" alt="BuJo.io Logo" class="about-logo" id="site-logo">
+            <img src="./img/BuJoLogo.png" alt="BuJo.io Logo" class="about-logo">
             <p>BuJo.io is a digital bullet journal built for the modern web. Inspired by the analog rapid logging system popularized by Ryder Carroll, BuJo.io brings the flexibility and mindfulness of a physical bullet journal to any browser without the notebook.</p>
             <p>At its core, BuJo.io is built around three entry types:</p>
             <ul class="about-list">
@@ -104,7 +104,10 @@
     </main>
     <script src="./js/storage.js"></script>
     <script>
-        window.onload = function () { applyUserSettings(); };
+        window.onload = function () { 
+            applyUserSettings();
+            initNav();
+        };
     </script>
 </body>
 </html>

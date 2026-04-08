@@ -206,7 +206,10 @@ function renderEntries() {
     if (!list) return;
 
     const view    = getActiveView();
-    const entries = loadEntries().filter(e => isInView(e.date, view));
+    const entries = loadEntries().filter(e => {
+        if (e.state === 'migrated' && view !== 'day') return false;
+        return isInView(e.date, view);
+    });
     list.innerHTML = '';
 
     if (entries.length === 0) return;
@@ -272,8 +275,29 @@ function renderEntries() {
     });
     list.querySelectorAll('.action-btn--migrate').forEach(btn => {
         btn.addEventListener('click', () => {
-            updateEntryState(Number(btn.dataset.id), 'migrated');
-            renderEntries();
+            const id = Number(btn.dataset.id);
+            const row = document.querySelector(`.entry-row[data-id="${id}"]`);
+            const actions = row.querySelector('.entry-actions');
+
+            actions.innerHTML = `
+                <input type="date" class="migrate-date-input" id="migrate-date-${id}">
+                <button class="action-btn action-btn--save migrate-confirm" data-id="${id}">→</button>
+                <button class="action-btn migrate-cancel" data-id="${id}">✕</button>
+            `;
+
+            const dateInput = document.getElementById(`migrate-date-${id}`);
+            dateInput.value = new Date(new Date().setDate(new Date().getDate() + 1))
+                .toISOString().split('T')[0];
+
+            actions.querySelector('.migrate-confirm').addEventListener('click', () => {
+                const selectedDate = dateInput.value;
+                if (!selectedDate) return;
+                migrateEntryToDate(id, selectedDate);
+            });
+
+            actions.querySelector('.migrate-cancel').addEventListener('click', () => {
+                renderEntries();
+            });
         });
     });
     list.querySelectorAll('.action-btn--delete').forEach(btn => {
@@ -314,6 +338,26 @@ function editEntry(id) {
     body.querySelector('.edit-input').focus();
 }
 
+function migrateEntryToDate(id, date) {
+    console.log('migrateEntryToDate called, id:', id, 'date:', date);
+    const entries = loadEntries();
+    const entry = entries.find(e => e.id === id);
+    if (!entry) return;
+
+    entry.state = 'migrated';
+
+    entries.push({
+        id: Date.now(),
+        type: 'todo',
+        html: entry.html,
+        date: date,
+        state: 'active'
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    renderEntries();
+}
+
 // ─── Modal ────────────────────────────────────────────────────
 
 function initModal() {
@@ -337,6 +381,62 @@ function initModal() {
 
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) closeModal();
+    });
+}
+
+function initModalQuill() {
+    const editorEl = document.getElementById('editor-modal');
+    if (!editorEl) return;
+
+    const quill = new Quill('#editor-modal', {
+        theme: 'snow',
+        placeholder: 'Write your entry…',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'strike'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                ['clean']
+            ]
+        }
+    });
+
+    const dateInput = document.getElementById('log-date-modal');
+    if (dateInput) dateInput.value = todayKey();
+
+    const form = document.getElementById('modal-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const isEmpty = quill.getText().trim().length === 0;
+        if (isEmpty) {
+            editorEl.style.outline = '2px solid #e53e3e';
+            quill.focus();
+            return;
+        }
+        editorEl.style.outline = '';
+
+        const logTypeInput = form.querySelector('input[name="log-type-modal"]:checked');
+        if (!logTypeInput) {
+            alert('Please choose a log type.');
+            return;
+        }
+
+        const selectedDate = dateInput.value || todayKey();
+        saveEntry(logTypeInput.value, quill.root.innerHTML, selectedDate);
+        renderEntries();
+
+        const overlay = document.getElementById('modal-overlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        quill.setContents([]);
+        form.reset();
+        if (dateInput) dateInput.value = todayKey();
     });
 }
 
@@ -386,9 +486,6 @@ function initQuill() {
         saveEntry(logTypeInput.value, quill.root.innerHTML, selectedDate);
         renderEntries();
 
-        saveEntry(logTypeInput.value, quill.root.innerHTML, selectedDate);
-        renderEntries();
-
         const overlay = document.getElementById('modal-overlay');
         if (overlay) {
             overlay.classList.remove('open');
@@ -398,12 +495,8 @@ function initQuill() {
         quill.setContents([]);
         form.reset();
         if (dateInput) dateInput.value = todayKey();
-
-                quill.setContents([]);
-                form.reset();
-                if (dateInput) dateInput.value = todayKey();
-            });
-        }
+    });
+}
 
 // ─── Init ─────────────────────────────────────────────────────
 
@@ -413,7 +506,9 @@ window.onload = async function () {
     displayCurrentDate();
     setActiveViewLink();
     initQuill();
+    initModalQuill();
     initModal();
+    initNav();
     renderEntries();
 
     const holidays = await fetchUpcomingHolidays();

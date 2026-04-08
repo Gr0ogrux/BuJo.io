@@ -51,64 +51,100 @@
                 <a href="setup.html">Settings</a>
             </div>
         </nav>
-        
+
         <section id="entries-list"></section>
+
+        <!-- Desktop form — visible on desktop, hidden on mobile -->
+        <form class="log-form" id="log-form" action="#" method="post">
+            <div class="form-group">
+                <label>Log Type:</label>
+                <div class="radio-group">
+                    <input type="radio" id="todo" name="log-type" value="todo" required>
+                    <label for="todo" class="log-type-label">
+                        <span class="log-type-bullet log-type-bullet--todo"></span>
+                        To-Do
+                    </label>
+                    <input type="radio" id="event" name="log-type" value="event">
+                    <label for="event" class="log-type-label">
+                        <span class="log-type-bullet log-type-bullet--event">◆</span>
+                        Event
+                    </label>
+                    <input type="radio" id="memory" name="log-type" value="memory">
+                    <label for="memory" class="log-type-label">
+                        <span class="log-type-bullet log-type-bullet--memory">#</span>
+                        Memory
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="date-group">
+                <label for="log-date">Date:</label>
+                <input type="date" id="log-date" name="log-date">
+            </div>
+
+            <div class="form-group">
+                <label for="log-entry">Log Entry:</label>
+                <div id="editor"></div>
+                <input type="hidden" id="log-entry" name="log-entry">
+            </div>
+
+            <button type="submit" class="submit-btn">Save Log</button>
+        </form>
+
+        <section id="holidays-section" class="collapsed">
+            <h2 id="holidays-toggle" style="cursor: pointer;">
+                ▶ Upcoming Holidays
+            </h2>
+            <div id="holiday-list" class="hidden"></div>
+        </section>
 
         <!-- Floating button (mobile only) -->
         <button class="fab" id="fab" aria-label="New entry">+</button>
 
-        <!-- Modal overlay -->
+        <!-- Modal overlay (mobile only) -->
         <div class="modal-overlay" id="modal-overlay">
             <div class="modal">
                 <div class="modal-header">
                     <h2 class="modal-title">New Entry</h2>
                     <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
                 </div>
-
-                <form class="log-form" id="log-form" action="#" method="post">
+                <form class="modal-form" id="modal-form" action="#" method="post">
                     <div class="form-group">
                         <label>Log Type:</label>
                         <div class="radio-group">
-                            <input type="radio" id="todo" name="log-type" value="todo" required>
-                            <label for="todo" class="log-type-label">
+                            <input type="radio" id="todo-modal" name="log-type-modal" value="todo" required>
+                            <label for="todo-modal" class="log-type-label">
                                 <span class="log-type-bullet log-type-bullet--todo"></span>
                                 To-Do
                             </label>
-                            <input type="radio" id="event" name="log-type" value="event">
-                            <label for="event" class="log-type-label">
+                            <input type="radio" id="event-modal" name="log-type-modal" value="event">
+                            <label for="event-modal" class="log-type-label">
                                 <span class="log-type-bullet log-type-bullet--event">◆</span>
                                 Event
                             </label>
-                            <input type="radio" id="memory" name="log-type" value="memory">
-                            <label for="memory" class="log-type-label">
+                            <input type="radio" id="memory-modal" name="log-type-modal" value="memory">
+                            <label for="memory-modal" class="log-type-label">
                                 <span class="log-type-bullet log-type-bullet--memory">#</span>
                                 Memory
                             </label>
                         </div>
                     </div>
 
-                    <div class="form-group" id="date-group">
-                        <label for="log-date">Date:</label>
-                        <input type="date" id="log-date" name="log-date">
+                    <div class="form-group">
+                        <label for="log-date-modal">Date:</label>
+                        <input type="date" id="log-date-modal" name="log-date-modal">
                     </div>
 
                     <div class="form-group">
-                        <label for="log-entry">Log Entry:</label>
-                        <div id="editor"></div>
-                        <input type="hidden" id="log-entry" name="log-entry">
+                        <label for="log-entry-modal">Log Entry:</label>
+                        <div id="editor-modal"></div>
+                        <input type="hidden" id="log-entry-modal" name="log-entry-modal">
                     </div>
 
                     <button type="submit" class="submit-btn">Save Log</button>
                 </form>
             </div>
         </div>
-
-        <section id="holidays-section" class="collapsed">
-            <h2 id="holidays-toggle" style="cursor: pointer;">
-        ▶ Upcoming Holidays
-            </h2>
-            <div id="holiday-list" class="hidden"></div>
-        </section>
 
     </main>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>

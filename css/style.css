@@ -88,7 +88,7 @@ body {
 }
 
 [data-theme="dark"] .site-logo {
-    content: url('../img/BuJoLogoDark.png');
+    content: url('../img/BuJoLogo-dark.png');
 }
 
 /* ─── Navigation ────────────────────────────────────────────── */
@@ -160,6 +160,36 @@ body {
 
 .nav-hamburger.open span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ─── View Nav (archive sub-navigation) ─────────────────────── */
+
+.view-nav {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.view-nav a {
+    padding: 6px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+
+.view-nav a.active {
+    background-color: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+}
+
+.view-nav a:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 /* ─── Form ──────────────────────────────────────────────────── */
@@ -552,6 +582,22 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
     background: var(--bg-secondary);
 }
 
+.migrate-date-input {
+    padding: 3px 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.8rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    width: auto;
+}
+
+.action-btn--save:hover {
+    color: #38a169;
+    border-color: #38a169;
+    background: #f0fff4;
+}
+
 /* ─── Inline Edit ───────────────────────────────────────────── */
 
 .edit-input {
@@ -563,12 +609,6 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
     margin-bottom: 4px;
     background-color: var(--bg-secondary);
     color: var(--text-primary);
-}
-
-.action-btn--save:hover {
-    color: #38a169;
-    border-color: #38a169;
-    background: #f0fff4;
 }
 
 /* ─── Holidays ──────────────────────────────────────────────── */
@@ -769,7 +809,7 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
 }
 
 [data-theme="dark"] .about-logo {
-    content: url('../img/BuJoLogoDark.png');
+    content: url('../img/BuJoLogo-dark.png');
 }
 
 .about-list {
@@ -836,7 +876,7 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
 }
 
 [data-theme="dark"] .landing-logo {
-    content: url('../img/BuJoLogoDark.png');
+    content: url('../img/BuJoLogo-dark.png');
 }
 
 .landing-title {
@@ -980,8 +1020,7 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
     .submit-btn {
         padding: 12px;
     }
-
-    /* Modal and FAB */
+    /* Modal and FAB on mobile */
     .fab {
         display: flex;
         align-items: center;
@@ -992,8 +1031,10 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
         display: none;
     }
 
-    .modal .log-form {
+    .modal-form {
         display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
     }
 
     /* Entries */

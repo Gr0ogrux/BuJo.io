@@ -98,7 +98,10 @@ function renderEntries(filterType = 'all') {
     const offset = getOffset();
     const range = getDateRange(view, offset);
 
-    let entries = loadEntries().filter(e => isInRange(e.date, view, range));
+    let entries = loadEntries().filter(e => {
+    if (e.state === 'migrated' && view !== 'day') return false;
+        return isInRange(e.date, view, range);
+    });
 
     if (filterType !== 'all') {
         entries = entries.filter(e => e.type === filterType);

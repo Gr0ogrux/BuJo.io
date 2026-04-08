@@ -1,3 +1,5 @@
+// ─── Pre-fill Form with Existing Settings ────────────────────
+
 function prefillForm() {
     const settings = loadUserSettings();
     if (!settings || !settings.name) return;
@@ -7,17 +9,24 @@ function prefillForm() {
     const timezone = document.getElementById('timezone');
     if (settings.timezone) timezone.value = settings.timezone;
 
-    if (visualRadio) {
-        visualRadio.checked = true;
-        document.documentElement.setAttribute('data-theme', settings.visualPreference);
+    if (settings.visualPreference) {
+        const visualRadio = document.querySelector(`input[name="visual-preference"][value="${settings.visualPreference}"]`);
+        if (visualRadio) {
+            visualRadio.checked = true;
+            document.documentElement.setAttribute('data-theme', settings.visualPreference);
+        }
     }
 
-    if (fontRadio) {
-        fontRadio.checked = true;
-        document.documentElement.setAttribute('data-font-size', settings.fontSize);
+    if (settings.fontSize) {
+        const fontRadio = document.querySelector(`input[name="font-size"][value="${settings.fontSize}"]`);
+        if (fontRadio) {
+            fontRadio.checked = true;
+            document.documentElement.setAttribute('data-font-size', settings.fontSize);
+        }
     }
 }
 
+// ─── Live Preview of Theme and Font Size ─────────────────────
 
 document.querySelectorAll('input[name="visual-preference"]').forEach(radio => {
     radio.addEventListener('change', () => {
@@ -31,6 +40,7 @@ document.querySelectorAll('input[name="font-size"]').forEach(radio => {
     });
 });
 
+// ─── Form Submit ──────────────────────────────────────────────
 
 const setupForm = document.querySelector('.setup-form');
 
@@ -52,5 +62,8 @@ setupForm.addEventListener('submit', (e) => {
     window.location.href = 'dashboard.html';
 });
 
+// ─── Init ─────────────────────────────────────────────────────
 
-prefillForm();
+document.addEventListener('DOMContentLoaded', function() {
+    prefillForm();
+});
