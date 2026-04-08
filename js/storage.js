@@ -1,6 +1,10 @@
 const SETTINGS_KEY = 'bujo_user_settings';
 const STORAGE_KEY = 'bujo_entries';
 
+function todayKey() {
+    return new Date().toISOString().split('T')[0];
+}
+
 function loadEntries() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
     catch { return []; }
@@ -21,13 +25,11 @@ function saveEntry(type, html, date) {
 function updateEntryState(id, state) {
     const entries = loadEntries().map(e => e.id === id ? { ...e, state } : e);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    renderEntries();
 }
 
 function deleteEntry(id) {
     const updated = loadEntries().filter(e => e.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    renderEntries();
 }
 
 function loadUserSettings() {

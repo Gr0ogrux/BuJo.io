@@ -41,4 +41,4 @@ Built Archive page.  Added function to disable date from progressing to the curr
 
 **04/07/2026** Debugging.  Fixed issue with new entry option disappearing on desktop view.  Fixed issue where pre-saved settings weren't being highlighted when returning to settings.  Fixed issue where new entries were appearing in duplicate.  Fixed hamburger menu not working on about page.  Added date picker for task migration.  Fixed issue where migrated entries were showing as duplicates in week/month/year views.  Removed unnecessary QuillJS from archive page.  Fixed stray closing tags in archive and dashboard pages.  Fixed dark mode logo path.
 
-**04/08/2026** Fixed active navigation link in dashboard.html.
+**04/08/2026** Fixed active navigation link in dashboard.html. Fixed storage.js to be fully self-contained by removing renderEntries() calls from updateEntryState() and deleteEntry(), and adding todayKey() directly to storage.js. This prevents potential ReferenceErrors on pages that load storage.js without index.js.
