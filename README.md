@@ -40,3 +40,5 @@ Built Archive page.  Added function to disable date from progressing to the curr
 **04/05/2026 (and 04/04/2026)** Edited About page.  Fixed issue with logo not loading correctly (because I uploaded the wrong kind of logo). Fixed CSS dark mode flashing issue (Thank you to Tyler Collins for helping me find that solution.)  Added logo to all pages.  Added responsive design.  Made "new entry" section into a pop-up for mobile view.  Created a new problem in that the new entry option now disappears completely on desktop view.
 
 **04/07/2026** Debugging.  Fixed issue with new entry option disappearing on desktop view.  Fixed issue where pre-saved settings weren't being highlighted when returning to settings.  Fixed issue where new entries were appearing in duplicate.  Fixed hamburger menu not working on about page.  Added date picker for task migration.  Fixed issue where migrated entries were showing as duplicates in week/month/year views.  Removed unnecessary QuillJS from archive page.  Fixed stray closing tags in archive and dashboard pages.  Fixed dark mode logo path.
+
+**04/08/2026** Fixed active navigation link in dashboard.html.

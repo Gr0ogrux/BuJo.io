@@ -1,3 +1,11 @@
+function setActiveNavLink() {
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        if (a.href.includes('dashboard.html')) {
+            a.classList.add('active');
+        }
+    });
+}
+
 function greetUser() {
     const settings = loadUserSettings();
     const hour = new Date().getHours();
@@ -167,6 +175,7 @@ function renderFilteredEntries() {
 window.onload = function () {
     applyUserSettings();
     initNav();
+    setActiveNavLink();
     greetUser();
     displayDate();
     renderStats();
