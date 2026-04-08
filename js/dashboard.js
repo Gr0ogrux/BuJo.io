@@ -12,6 +12,79 @@ function setActiveNavLink() {
     });
 }
 
+function editDashboardEntry(id) {
+    const entries = loadEntries();
+    const entry = entries.find(e => e.id === id);
+    if (!entry) return;
+
+    const row = document.querySelector(`.week-entry[data-id="${id}"]`);
+    const body = row.querySelector('.week-entry-body');
+    const currentText = entry.html.replace(/<[^>]*>/g, '').trim();
+
+    body.innerHTML = `
+        <input type="text" class="edit-input" value="${currentText}">
+        <input type="date" class="edit-input" id="edit-date-${id}" value="${entry.date}">
+        <button class="action-btn action-btn--save" data-id="${id}">Save</button>
+    `;
+
+    body.querySelector('.action-btn--save').addEventListener('click', () => {
+        const newText = body.querySelector('input[type="text"]').value.trim();
+        const newDate = document.getElementById(`edit-date-${id}`).value;
+        if (!newText) return;
+        entry.html = `<p>${newText}</p>`;
+        entry.date = newDate || entry.date;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        renderWeekEntries();
+        renderFilteredEntries();
+        renderStats();
+    });
+
+    body.querySelector('input[type="text"]').focus();
+}
+
+function migrateDashboardEntry(id) {
+    const entries = loadEntries();
+    const entry = entries.find(e => e.id === id);
+    if (!entry) return;
+
+    const row = document.querySelector(`.week-entry[data-id="${id}"]`);
+    const actions = row.querySelector('.week-entry-actions');
+
+    actions.innerHTML = `
+        <input type="date" class="migrate-date-input" id="migrate-date-${id}">
+        <button class="action-btn action-btn--save migrate-confirm" data-id="${id}">→</button>
+        <button class="action-btn migrate-cancel" data-id="${id}">✕</button>
+    `;
+
+    const dateInput = document.getElementById(`migrate-date-${id}`);
+    dateInput.value = new Date(new Date().setDate(new Date().getDate() + 1))
+        .toISOString().split('T')[0];
+
+    actions.querySelector('.migrate-confirm').addEventListener('click', () => {
+        const selectedDate = dateInput.value;
+        if (!selectedDate) return;
+
+        entry.state = 'migrated';
+        entries.push({
+            id: Date.now(),
+            type: 'todo',
+            html: entry.html,
+            date: selectedDate,
+            state: 'active'
+        });
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        renderWeekEntries();
+        renderFilteredEntries();
+        renderStats();
+    });
+
+    actions.querySelector('.migrate-cancel').addEventListener('click', () => {
+        renderWeekEntries();
+        renderFilteredEntries();
+    });
+}
+
 function greetUser() {
     const settings = loadUserSettings();
     const hour = new Date().getHours();
@@ -89,13 +162,53 @@ function renderWeekEntries() {
         <div class="week-group">
             <h3 class="week-date">${new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
             ${grouped[date].map(e => `
-                <div class="week-entry week-entry--${e.type}">
+                <div class="week-entry week-entry--${e.type} entry-row--${e.state}" data-id="${e.id}">
                     <span class="week-entry-type">${SYMBOLS[e.type] || e.type}</span>
                     <span class="week-entry-body">${e.html.replace(/<[^>]*>/g, '')}</span>
+                    ${e.type === 'todo' && e.state === 'active' ? `
+                        <div class="week-entry-actions">
+                            <button class="action-btn action-btn--done" data-id="${e.id}" title="Mark complete">✕</button>
+                            <button class="action-btn action-btn--migrate" data-id="${e.id}" title="Migrate">›</button>
+                            <button class="action-btn action-btn--delete" data-id="${e.id}" title="Delete">⌫</button>
+                        </div>` : ''}
+                    ${e.type === 'todo' && e.state !== 'active' ? `
+                        <div class="week-entry-actions">
+                            <button class="action-btn action-btn--delete" data-id="${e.id}" title="Delete">⌫</button>
+                        </div>` : ''}
+                    ${e.type === 'event' ? `
+                        <div class="week-entry-actions">
+                            <button class="action-btn action-btn--edit" data-id="${e.id}" title="Edit">✎</button>
+                            <button class="action-btn action-btn--delete" data-id="${e.id}" title="Delete">⌫</button>
+                        </div>` : ''}
                 </div>
             `).join('')}
         </div>
     `).join('');
+    function attachDashboardListeners() {
+        document.querySelectorAll('.week-entry .action-btn--done').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateEntryState(Number(btn.dataset.id), 'done');
+                renderWeekEntries();
+                renderFilteredEntries();
+                renderStats();
+            });
+        });
+        document.querySelectorAll('.week-entry .action-btn--migrate').forEach(btn => {
+            btn.addEventListener('click', () => migrateDashboardEntry(Number(btn.dataset.id)));
+        });
+        document.querySelectorAll('.week-entry .action-btn--delete').forEach(btn => {
+            btn.addEventListener('click', () => {
+                deleteEntry(Number(btn.dataset.id));
+                renderWeekEntries();
+                renderFilteredEntries();
+                renderStats();
+            });
+        });
+        document.querySelectorAll('.week-entry .action-btn--edit').forEach(btn => {
+            btn.addEventListener('click', () => editDashboardEntry(Number(btn.dataset.id)));
+        });
+    }
+    attachDashboardListeners();
 }
 
 function renderOldestTask() {
@@ -169,13 +282,53 @@ function renderFilteredEntries() {
         <div class="week-group">
             <h3 class="week-date">${new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
             ${grouped[date].map(e => `
-                <div class="week-entry week-entry--${e.type}">
+                <div class="week-entry week-entry--${e.type} entry-row--${e.state}" data-id="${e.id}">
                     <span class="week-entry-type">${SYMBOLS[e.type] || e.type}</span>
                     <span class="week-entry-body">${e.html.replace(/<[^>]*>/g, '')}</span>
+                    ${e.type === 'todo' && e.state === 'active' ? `
+                        <div class="week-entry-actions">
+                            <button class="action-btn action-btn--done" data-id="${e.id}" title="Mark complete">✕</button>
+                            <button class="action-btn action-btn--migrate" data-id="${e.id}" title="Migrate">›</button>
+                            <button class="action-btn action-btn--delete" data-id="${e.id}" title="Delete">⌫</button>
+                        </div>` : ''}
+                    ${e.type === 'todo' && e.state !== 'active' ? `
+                        <div class="week-entry-actions">
+                            <button class="action-btn action-btn--delete" data-id="${e.id}" title="Delete">⌫</button>
+                        </div>` : ''}
+                    ${e.type === 'event' ? `
+                        <div class="week-entry-actions">
+                            <button class="action-btn action-btn--edit" data-id="${e.id}" title="Edit">✎</button>
+                            <button class="action-btn action-btn--delete" data-id="${e.id}" title="Delete">⌫</button>
+                        </div>` : ''}
                 </div>
             `).join('')}
         </div>
     `).join('');
+    function attachDashboardListeners() {
+        document.querySelectorAll('.week-entry .action-btn--done').forEach(btn => {
+            btn.addEventListener('click', () => {
+                updateEntryState(Number(btn.dataset.id), 'done');
+                renderWeekEntries();
+                renderFilteredEntries();
+                renderStats();
+            });
+        });
+        document.querySelectorAll('.week-entry .action-btn--migrate').forEach(btn => {
+            btn.addEventListener('click', () => migrateDashboardEntry(Number(btn.dataset.id)));
+        });
+        document.querySelectorAll('.week-entry .action-btn--delete').forEach(btn => {
+            btn.addEventListener('click', () => {
+                deleteEntry(Number(btn.dataset.id));
+                renderWeekEntries();
+                renderFilteredEntries();
+                renderStats();
+            });
+        });
+        document.querySelectorAll('.week-entry .action-btn--edit').forEach(btn => {
+            btn.addEventListener('click', () => editDashboardEntry(Number(btn.dataset.id)));
+        });
+    }
+    attachDashboardListeners();
 }
 
 window.onload = function () {

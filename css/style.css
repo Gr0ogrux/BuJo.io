@@ -745,6 +745,18 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
     align-items: baseline;
 }
 
+.week-entry-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.week-entry:hover .week-entry-actions {
+    opacity: 1;
+}
+
 .week-entry-type {
     font-size: 0.75rem;
     color: var(--text-tertiary);
