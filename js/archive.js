@@ -94,6 +94,8 @@ function renderEntries(filterType = 'all') {
     const list = document.getElementById('entries-list');
     if (!list) return;
 
+    list.innerHTML = '';
+
     const view = getActiveView();
     const offset = getOffset();
     const range = getDateRange(view, offset);
@@ -158,14 +160,38 @@ function renderEntries(filterType = 'all') {
         });
     });
     list.querySelectorAll('.action-btn--done').forEach(btn => {
-    btn.addEventListener('click', () => {
-        updateEntryState(Number(btn.dataset.id), 'done');
-        renderEntries();
-        });
+        btn.addEventListener('click', () => {
+            updateEntryState(Number(btn.dataset.id), 'done');
+            renderEntries();
+            });
     });
 
     list.querySelectorAll('.action-btn--migrate').forEach(btn => {
-        btn.addEventListener('click', () => migrateEntry(Number(btn.dataset.id)));
+        btn.addEventListener('click', () => {
+            const id = Number(btn.dataset.id);
+            const row = document.querySelector(`.entry-row[data-id="${id}"]`);
+            const actions = row.querySelector('.entry-actions');
+
+            actions.innerHTML = `
+                <input type="date" class="migrate-date-input" id="migrate-date-${id}">
+                <button class="action-btn action-btn--save migrate-confirm" data-id="${id}">→</button>
+                <button class="action-btn migrate-cancel" data-id="${id}">✕</button>
+            `;
+
+            const dateInput = document.getElementById(`migrate-date-${id}`);
+            dateInput.value = new Date(new Date().setDate(new Date().getDate() + 1))
+                .toISOString().split('T')[0];
+
+            actions.querySelector('.migrate-confirm').addEventListener('click', () => {
+                const selectedDate = dateInput.value;
+                if (!selectedDate) return;
+                migrateEntry(id, selectedDate);
+            });
+
+            actions.querySelector('.migrate-cancel').addEventListener('click', () => {
+                renderEntries();
+            });
+        });
     });
 
     list.querySelectorAll('.action-btn--delete').forEach(btn => {
@@ -213,7 +239,7 @@ function navigate(direction) {
     window.location.search = params.toString();
 }
 
-function migrateEntry(id) {
+function migrateEntry(id, date) {
     const entries = loadEntries();
     const entry = entries.find(e => e.id === id);
     if (!entry) return;
@@ -224,7 +250,7 @@ function migrateEntry(id) {
         id: Date.now(),
         type: 'todo',
         html: entry.html,
-        date: todayKey(),
+        date: date || todayKey(),
         state: 'active'
     });
 
@@ -238,11 +264,14 @@ function todayKey() {
 
 window.onload = function () {
     const params = new URLSearchParams(window.location.search);
-    if (!params.has('offset')) {
+    
+    const offset = parseInt(params.get('offset') || '0');
+    if (!params.has('offset') || offset >= 0) {
         params.set('offset', '-1');
         window.location.search = params.toString();
         return;
     }
+
     applyUserSettings();
     initNav();
     updateTitle();
