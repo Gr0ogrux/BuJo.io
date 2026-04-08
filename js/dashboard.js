@@ -179,6 +179,7 @@ window.onload = function () {
     greetUser();
     displayDate();
     renderStats();
+    renderWeekEntries();
     renderFilteredEntries();
     renderOldestTask();
 };
