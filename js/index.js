@@ -35,7 +35,10 @@ function isInView(dateString, view) {
         const start = new Date(today);
         start.setDate(today.getDate() - today.getDay());
         start.setHours(0, 0, 0, 0);
-        return date >= start;
+        const end = new Date(start);
+        end.setDate(start.getDate() + 6);
+        end.setHours(23, 59, 59, 999);
+        return date >= start && date <= end;
     }
     if (view === 'month') {
         return date.getMonth() === today.getMonth() &&
@@ -255,8 +258,8 @@ function renderEntries() {
         }
 
         const entryDate = entry.type === 'event'
-            ? `<span class="entry-date">${formatDateMMDDYYYY(entry.date).slice(0, 5).replace('-', '/')}</span>`
-            : '';
+        ? `<span class="entry-date">${entry.date.slice(5).replace('-', '/')}</span>`
+        : '';
 
         row.innerHTML = `
             <div class="entry-symbol">${symbolHtml}</div>
@@ -320,22 +323,25 @@ function editEntry(id) {
 
     const row  = document.querySelector(`.entry-row[data-id="${id}"]`);
     const body = row.querySelector('.entry-body');
-    const currentText = body.innerText.trim();
+    const currentText = entry.html.replace(/<[^>]*>/g, '').trim();
 
     body.innerHTML = `
         <input type="text" class="edit-input" value="${currentText}">
+        <input type="date" class="edit-input" id="edit-date-${id}" value="${entry.date}">
         <button class="action-btn action-btn--save" data-id="${id}">Save</button>
     `;
 
     body.querySelector('.action-btn--save').addEventListener('click', () => {
-        const newText = body.querySelector('.edit-input').value.trim();
+        const newText = body.querySelector('input[type="text"]').value.trim();
+        const newDate = document.getElementById(`edit-date-${id}`).value;
         if (!newText) return;
         entry.html = `<p>${newText}</p>`;
+        entry.date = newDate || entry.date;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
         renderEntries();
     });
 
-    body.querySelector('.edit-input').focus();
+    body.querySelector('input[type="text"]').focus();
 }
 
 function migrateEntryToDate(id, date) {

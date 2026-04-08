@@ -1,3 +1,9 @@
+const SYMBOLS = {
+    todo:   '<span class="bullet bullet--todo"   aria-label="task"></span>',
+    event:  '<span class="bullet bullet--event"  aria-label="event">◆</span>',
+    memory: '<span class="bullet bullet--memory" aria-label="memory">#</span>',
+};
+
 function setActiveNavLink() {
     document.querySelectorAll('.nav-links a').forEach(a => {
         if (a.href.includes('dashboard.html')) {
@@ -84,7 +90,7 @@ function renderWeekEntries() {
             <h3 class="week-date">${new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
             ${grouped[date].map(e => `
                 <div class="week-entry week-entry--${e.type}">
-                    <span class="week-entry-type">${e.type}</span>
+                    <span class="week-entry-type">${SYMBOLS[e.type] || e.type}</span>
                     <span class="week-entry-body">${e.html.replace(/<[^>]*>/g, '')}</span>
                 </div>
             `).join('')}
@@ -164,7 +170,7 @@ function renderFilteredEntries() {
             <h3 class="week-date">${new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h3>
             ${grouped[date].map(e => `
                 <div class="week-entry week-entry--${e.type}">
-                    <span class="week-entry-type">${e.type}</span>
+                    <span class="week-entry-type">${SYMBOLS[e.type] || e.type}</span>
                     <span class="week-entry-body">${e.html.replace(/<[^>]*>/g, '')}</span>
                 </div>
             `).join('')}

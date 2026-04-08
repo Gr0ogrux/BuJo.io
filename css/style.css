@@ -748,9 +748,10 @@ input[type="radio"]:checked + .log-type-label .log-type-bullet--memory {
 .week-entry-type {
     font-size: 0.75rem;
     color: var(--text-tertiary);
-    min-width: 52px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .week-entry-body {
