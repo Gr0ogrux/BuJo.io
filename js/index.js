@@ -66,14 +66,6 @@ function todayKey() {
     return new Date().toISOString().split('T')[0];
 }
 
-function formatDateMMDDYYYY(dateString) {
-    const date = new Date(dateString);
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day   = String(date.getDate()).padStart(2, '0');
-    const year  = date.getFullYear();
-    return `${month}-${day}-${year}`;
-}
-
 function formatRange(start, end, view) {
     const dayMonth  = { month: 'long', day: 'numeric' };
     const monthYear = { month: 'long', year: 'numeric' };
@@ -158,7 +150,7 @@ function renderHolidays(holidays) {
         div.className = "holiday-card";
         div.innerHTML = `
             <strong>${h.name}</strong><br>
-            <small>${formatDateMMDDYYYY(h.date)}</small><br>
+            <small>${h.date.slice(5).replace('-', '/')}</small><br>
             <em>${days === 0 ? "Today!" : `${days} days remaining`}</em><br>
             <button class="add-holiday-btn" data-name="${h.name}" data-date="${h.date}">
                 Add to Journal
