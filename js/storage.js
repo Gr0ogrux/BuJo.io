@@ -70,3 +70,5 @@ function initNav() {
         }
     });
 }
+
+/* Early on I had all my localStorage logic scattered across index.js and it was getting hard to manage. If I wanted to change how entries were saved, I'd have to find and update it in multiple places. Claude AI suggested creating a separate storage.js file to encapsulate all the localStorage logic. */ 

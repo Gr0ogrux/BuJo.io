@@ -18,6 +18,8 @@ function setActiveViewLink() {
     });
 }
 
+/* The following function ( getDateRange() ) was written with the assistance of Claude AI.  After trying, and failing to implement the date math inside renderEntries(), I finally asked Claude for help with this.  Claude gave me this function and explained how it worked before I added it. */
+
 function getDateRange(view, offset) {
     const today = new Date();
 

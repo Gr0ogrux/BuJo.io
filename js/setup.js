@@ -1,5 +1,3 @@
-// ─── Pre-fill Form with Existing Settings ────────────────────
-
 function prefillForm() {
     const settings = loadUserSettings();
     if (!settings || !settings.name) return;
@@ -26,8 +24,6 @@ function prefillForm() {
     }
 }
 
-// ─── Live Preview of Theme and Font Size ─────────────────────
-
 document.querySelectorAll('input[name="visual-preference"]').forEach(radio => {
     radio.addEventListener('change', () => {
         document.documentElement.setAttribute('data-theme', radio.value);
@@ -39,8 +35,6 @@ document.querySelectorAll('input[name="font-size"]').forEach(radio => {
         document.documentElement.setAttribute('data-font-size', radio.value);
     });
 });
-
-// ─── Form Submit ──────────────────────────────────────────────
 
 const setupForm = document.querySelector('.setup-form');
 
@@ -61,8 +55,6 @@ setupForm.addEventListener('submit', (e) => {
     localStorage.setItem('hasCompletedSetup', 'true');
     window.location.href = 'dashboard.html';
 });
-
-// ─── Init ─────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', function() {
     prefillForm();
